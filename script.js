@@ -154,3 +154,48 @@ function launchConfetti() {
     setTimeout(() => requestAnimationFrame(fall), Math.random() * 1000); // stagger
   }
 }
+
+const cake = document.querySelector('.cake');
+
+// Cake frames
+const cakeFrames = [
+  './assets/cake/pixil-frame-0.png',
+  './assets/cake/pixil-frame-1.png',
+  './assets/cake/pixil-frame-2.png'
+];
+
+let cakeFrameIndex = 0;
+let isSpecialFrame = false; // toggles between normal loop and clicked frame
+
+const normalCakeFrameRate = 400; // speed of normal loop
+let cakeInterval;
+
+// Function to start looping first two frames
+function startCakeLoop() {
+  clearInterval(cakeInterval);
+  isSpecialFrame = false;
+  cakeFrameIndex = 0;
+  cakeInterval = setInterval(() => {
+    cakeFrameIndex = (cakeFrameIndex + 1) % 2; // only 0 and 1
+    cake.src = cakeFrames[cakeFrameIndex];
+  }, normalCakeFrameRate);
+}
+
+// Function to show special frame
+function showSpecialFrame() {
+  clearInterval(cakeInterval);
+  isSpecialFrame = true;
+  cake.src = cakeFrames[2]; // third frame
+}
+
+// Start normal animation initially
+startCakeLoop();
+
+// Click toggle
+cake.addEventListener('click', () => {
+  if (isSpecialFrame) {
+    startCakeLoop(); // go back to looping 0 and 1
+  } else {
+    showSpecialFrame(); // show frame 2
+  }
+});

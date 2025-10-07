@@ -29,7 +29,7 @@ html, body {
   width: 28%;               /* adjust size separately */
   height: auto;
   top: 55%;                 /* adjust vertical position */
-  left: 80%;                /* adjust horizontal position */
+  left: 90%;                /* adjust horizontal position */
   z-index: 10;
 }
 
@@ -48,18 +48,18 @@ html, body {
 .gift-box {
   position: absolute;
   transform: translate(-50%, -50%);
-  width: 17%;               /* adjust size separately */
+  width: 20%;               /* adjust size separately */
   height: auto;
-  top: 70%;                 /* adjust vertical position */
-  left: 52%;                /* adjust horizontal position */
+  top: 67%;                 /* adjust vertical position */
+  left: 50%;                /* adjust horizontal position */
   cursor: pointer;
   z-index: 10;
 }
 
 .cat {
   position: absolute;
-  top: 42.5%;                 /* adjust vertical position */
-  left: 80%;                /* adjust horizontal position */         
+  top: 42%;                 /* adjust vertical position */
+  left: 90%;                /* adjust horizontal position */       
   transform: translate(-50%, -50%);
   width: 20%;       
   height: auto;
@@ -68,4 +68,17 @@ html, body {
   cursor: pointer;
   transition: transform 5s linear;  /* slower float */
 }
+
+/* Cake */
+.cake {
+  position: absolute;      /* position on the screen */
+  left: 72%;               /* horizontal position */
+  top: 60%;                /* vertical position */
+  width: 15%;              /* adjust size as needed */
+  height: auto;            /* maintain aspect ratio */
+  z-index: 10;             /* in front of background but behind other elements if needed */
+  cursor: pointer;         /* indicate clickable */
+  transition: transform 0.3s ease; /* optional: smooth effect if you want to scale on hover/click */
+}
+
 
