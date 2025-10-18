@@ -81,4 +81,14 @@ html, body {
   transition: transform 0.3s ease; /* optional: smooth effect if you want to scale on hover/click */
 }
 
+.neha {
+  position: absolute;
+  bottom: 3%;        /* distance from bottom as % of parent height */
+  left: 69%;
+  transform: translateX(-50%);
+  width: 26%;         /* slightly bigger */
+  image-rendering: pixelated;
+  cursor: pointer;
+  z-index: 10;
+}
 

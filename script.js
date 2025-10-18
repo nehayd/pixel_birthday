@@ -90,8 +90,8 @@ giftBox.addEventListener('click', () => {
   isLaughing = true;
   laughIndex = 0;
 
-  // Stop laughing after 15 seconds
-  const laughDuration = 10000; // 10 seconds
+  // Stop laughing after 5 seconds
+  const laughDuration = 15000; // 5 seconds
   setTimeout(() => {
     isLaughing = false; // resume normal animation
   }, laughDuration);
@@ -199,3 +199,162 @@ cake.addEventListener('click', () => {
     showSpecialFrame(); // show frame 2
   }
 });
+
+// --- Neha animation setup ---
+const nehaImg = document.querySelector('.neha');
+
+// Idle frames (0–3)
+const nehaIdleFrames = [
+  './assets/neha/pixil-frame-0.png',
+  './assets/neha/pixil-frame-1.png',
+  './assets/neha/pixil-frame-2.png',
+  './assets/neha/pixil-frame-3.png'
+];
+
+// Click frames (4–6)
+const nehaClickFrames = [
+  './assets/neha/pixil-frame-4.png',
+  './assets/neha/pixil-frame-5.png',
+  './assets/neha/pixil-frame-6.png'
+];
+
+// --- State ---
+let nehaIdleIndex = 0;
+let nehaClickIndex = 0;
+let isNehaClicked = false;
+
+// --- Animation function ---
+function animateNeha() {
+  if (isNehaClicked) {
+    // Play click frames
+    nehaImg.src = nehaClickFrames[nehaClickIndex];
+    nehaClickIndex++;
+
+    if (nehaClickIndex >= nehaClickFrames.length) {
+      // After last click frame, reset to idle loop
+      isNehaClicked = false;
+      nehaClickIndex = 0;
+    }
+    setTimeout(animateNeha, 300); // speed of click animation
+  } else {
+    // Idle loop
+    nehaImg.src = nehaIdleFrames[nehaIdleIndex];
+    nehaIdleIndex = (nehaIdleIndex + 1) % nehaIdleFrames.length;
+    setTimeout(animateNeha, 400); // speed of idle loop
+  }
+}
+
+// --- Start animation ---
+animateNeha();
+
+// --- Click triggers click frames ---
+nehaImg.addEventListener('click', () => {
+  isNehaClicked = true;
+  nehaClickIndex = 0;
+});
+
+const happyFrames = [
+  './assets/happy/pixil-frame-0.png',
+  './assets/happy/pixil-frame-1.png',
+  './assets/happy/pixil-frame-0.png',
+  './assets/happy/pixil-frame-1.png',
+  './assets/happy/pixil-frame-0.png',
+  './assets/happy/pixil-frame-1.png',
+  './assets/happy/pixil-frame-0.png',
+  './assets/happy/pixil-frame-1.png'
+];
+
+const birthdayFrames = [
+  './assets/birthday/pixil-frame-0.png',
+  './assets/birthday/pixil-frame-1.png',
+  './assets/birthday/pixil-frame-0.png',
+  './assets/birthday/pixil-frame-1.png',
+  './assets/birthday/pixil-frame-0.png',
+  './assets/birthday/pixil-frame-1.png',
+  './assets/birthday/pixil-frame-0.png',
+  './assets/birthday/pixil-frame-1.png'
+];
+
+function showPixelText(frames, topPercent, duration = 15000, leftPercent = 50, width = 150) {
+  const preloaded = frames.map(src => {
+    const img = new Image();
+    img.src = src;
+    return img;
+  });
+
+  const imgEl = document.createElement('img');
+  imgEl.src = frames[0];
+  imgEl.classList.add('pixel-text');
+
+  imgEl.style.position = 'fixed';
+  imgEl.style.left = `${leftPercent}%`;
+  imgEl.style.top = `${topPercent}%`;
+  imgEl.style.transform = 'translate(-50%, -50%)';
+  imgEl.style.opacity = '0';
+  imgEl.style.transition = 'opacity 0.5s';
+  imgEl.style.imageRendering = 'pixelated';
+  imgEl.style.zIndex = '20';
+  imgEl.style.pointerEvents = 'none';
+  imgEl.style.width = `${width}px`; // make it smaller
+  imgEl.style.height = 'auto';      // maintain aspect ratio
+
+  document.body.appendChild(imgEl);
+
+  // Fade in
+  setTimeout(() => { imgEl.style.opacity = '1'; }, 50);
+
+  // Animate frames smoothly at 500ms per frame
+  let frameIndex = 0;
+  const frameInterval = setInterval(() => {
+    frameIndex = (frameIndex + 1) % frames.length;
+    imgEl.src = frames[frameIndex];
+  }, 500);
+
+  // Fade out and remove after duration
+  setTimeout(() => {
+    clearInterval(frameInterval);
+    imgEl.style.opacity = '0';
+    setTimeout(() => imgEl.remove(), 500);
+  }, duration);
+}
+
+// Gift box click
+// Preload audio
+const happyBirthdaySong = new Audio('./assets/audio/happy_birthday_piano.mp3'); // update path
+
+giftBox.addEventListener('click', () => {
+  giftBox.src = frame1.src;   
+  launchConfetti();
+  isLaughing = true;
+  laughIndex = 0;
+
+  // Play Happy Birthday song
+  happyBirthdaySong.currentTime = 0; // start from beginning
+  happyBirthdaySong.volume = 1;       // ensure full volume
+  happyBirthdaySong.play();
+
+  // HAPPY slightly upper-left
+  showPixelText(happyFrames, 30, 15000, 20, 1000); // top 30%, left 20%, width 1000px
+
+  // BIRTHDAY a bit upper-left of center
+  setTimeout(() => {
+    showPixelText(birthdayFrames, 40, 15000, 25, 1000); // top 40%, left 25%, width 1000px
+  }, 300);
+
+  // Stop laughing after 5 seconds
+  setTimeout(() => { isLaughing = false; }, 15000);
+
+  // Fade out music after 7 seconds (matching text duration)
+  setTimeout(() => {
+    let fadeAudio = setInterval(() => {
+      if (happyBirthdaySong.volume > 0.05) {
+        happyBirthdaySong.volume -= 0.05; // reduce volume gradually
+      } else {
+        happyBirthdaySong.pause();
+        happyBirthdaySong.volume = 1; // reset for next click
+        clearInterval(fadeAudio);
+      }
+    }, 100); // fade steps every 100ms
+  }, 15000); // start fading after 15 seconds
+});
+
